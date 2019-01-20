@@ -17,4 +17,4 @@ function findNemo(array) {
     console.log(`performance took ${t1 - t0}`);
 }
 
-findNemo(large);
+// findNemo(large);
