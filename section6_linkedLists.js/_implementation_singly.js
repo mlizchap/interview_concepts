@@ -1,18 +1,4 @@
-const http = require('http');
-
-const hostname = '127.0.0.1';
-const port = 3000;
-
-// const big0 = require('./section2_big0');
-
-
-
-/*************** PLAYGROUND ******************/
-
-// reverse a linked list
-  // 1 -> 10 -> 16 -> 88 returns 88 -> 16 -> 10 -> 1
-
-  class Node {
+class Node {
     constructor(value) {
       this.value = value,
       this.next = null
@@ -90,28 +76,28 @@ const port = 3000;
       }
       return currentNode;
     }
-
+    
     reverse() {
-      if (!this.head.next) {
-        return head;
+        if (!this.head.next) {
+          return head;
+        }
+  
+        let first = this.head;
+        this.tail = this.head;
+        let second = first.next;
+  
+        first.next = null;
+  
+        while (second) {
+          const temp = second.next; /* temp variable for a ref to the curr node's next node to use only within this while loop */
+          second.next = first; /* we loose are reference to the node after current, which is why we stored it in a variable */
+          first = second;
+          second = temp;
+        }
+  
+        this.head = first;
+        return this.printList();
       }
-
-      let first = this.head;
-      this.tail = this.head;
-      let second = first.next;
-
-      first.next = null;
-
-      while (second) {
-        const temp = second.next; /* temp variable for a ref to the curr node's next node to use only within this while loop */
-        second.next = first; /* we loose are reference to the node after current, which is why we stored it in a variable */
-        first = second;
-        second = temp;
-      }
-
-      this.head = first;
-      return this.printList();
-    }
   
     printList() {
         let values = ''
@@ -129,21 +115,11 @@ const port = 3000;
         }
   }
   
-  const myLL = new LinkedList(1); 
-  myLL.append(2); 
-  myLL.reverse(); // 3 -> 2 -> 1 
-
-
-
-
-/*********************************/
-
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World\n');
-});
-
-server.listen(port, hostname, () => {
-//   console.log(`Server running at http://${hostname}:${port}/`);
-});
+  const myLL = new LinkedList(4); // 4
+  myLL.append(7); // 4 -> 7
+  myLL.append(8); // 4 -> 7 -> 8
+  myLL.printList();
+  myLL.insert(1, 5); // 4 -> 5 -> 7 -> 8
+  myLL.insert(20, 88); // 4 -> 5 -> 7 -> 8 -> 88
+  myLL.remove(1); // 4 -> 7 -> 8 -> 88
+  myLL.remove(0); // 7 -> 8 -> 88
