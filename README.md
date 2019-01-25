@@ -9,6 +9,7 @@
     - [Arrays](#arrays)
     - [Hash Tables](#hash-tables)
     - [Linked Lists](#linked-lists)
+    - [stacks and queues](#stacks-and-queues)
 
 ## Topics
 ### Data Structure Types
@@ -669,3 +670,173 @@ myLL.remove(1); // 4 -> 7 -> 8 -> 88
 - **doubly**
     - *pro*: can be traversed forwards and backwards, easier to delete if you need to delete a previous node and good for searching for elements
     - *con*: more complex and requires more memories and stoarage
+
+### Stacks and Queues
+<table>
+<tr><th>pros</th><th>cons</th></tr>
+<tr><td>fast operations*</td><td>slow lookup</td></tr>
+<tr><td>fast peek</td><td></td></tr>
+<tr><td>ordered</td><td></td></tr>
+</table>
+
+
+- linear data structures - allow us to traverse elements sequentially (one by one), only one data element can be directly reached
+- can be made up of linked lists or arrays.  You should always use linked lists for queues.  For stacks it depends.
+- more limited operations than linked lists and arrays
+- the two differ by means of how items are removed from each data structure
+
+#### Stacks
+<table>
+<tr><td>lookup</td><td>O(n)</td></tr>
+<tr><td>pop</td><td>O(1)</td></tr>
+<tr><td>push</td><td>O(1)</td></tr>
+<tr><td>peek</td><td>O(1)</td></tr>
+</table>
+
+- **pop**: remove the last item
+- **push**: add item
+- **peek**: look at the top item
+- **lookup**: to traverse through a stack (not ideal)
+- LIFO - the last item added is the first item out
+- can only touch the top item
+- good when you need to know the last item add, ex: browser history, undo functionality
+- can use arrays or linked lists 
+    - **arrays**: have cache locality, makes them faster when accessing items in memory because they are right next to each other. (linked lists have scattered memory).  Linked lists also have extra memory because you need to hold on to pointers.
+    - **linked lists**: has more dynamic memory. In JS whenever an array is about to reach its limit, it has to double the memory and create new space while with linked list you can add one at a time.
+
+#### Stack Implementation - Array
+```javascript
+class Stack {
+    constructor() {
+      this.data = [];
+    }
+    peek() {
+      if (this.isEmpty()) {
+        return "empty"
+      }
+      return this.data[this.data.length - 1];
+    }
+    push(value) {
+      this.data.push(value);
+      return this;
+    }
+    pop() {
+      return this.data.pop();
+    }
+    isEmpty() {
+      if (this.size === 0) {
+        return true 
+      } else {
+        return false
+      }
+    }
+    printStack() {
+      console.log(this.data)
+    }
+  }
+  
+  const stack = new Stack();
+  stack.push("a"); // [a]
+  stack.pop());  // []
+```
+#### Stack Implementation - Linked List
+```javascript
+
+```
+#### Queues
+<table>
+<tr><td>lookup</td><td>O(n)</td></tr>
+<tr><td>enqueue</td><td>O(1)</td></tr>
+<tr><td>dequeue</td><td>O(1)</td></tr>
+<tr><td>peek</td><td>O(1)</td></tr>
+</table>
+
+- FIFO - the first item added is the first item out
+- good to use when there is a waitlist involved  
+    - person who makes the request first, gets priority
+    - ex: queues to buy tickets, wait for a table, uber/lift, etc.
+- **enqueue**: add item
+- **dequeue**: remove the first person added
+- **peek**: to look at the first item added
+- **lookup**: to traverse through the queue (not ideal)
+- *always use linked lists as the underlying data structure for queues*
+    - **arrays**: Since you are removing the first item you would need to use `unshift` which means every other item in the array needs to be shifted. An `O(n)` operation.
+    - **linked list**: has a pointer to the head and when we remove the item, we just move the head pointer over to the next item.  An `O(1)` operation.
+#### Queue Implementation
+```javascript
+class Node {
+  constructor(value) {
+    this.value = value;
+    this.next = null;
+  }
+}
+
+class Queue {
+  constructor() {
+    this.first = null;
+    this.last = null;
+    this.length = 0;
+  }
+  peek() {
+    return this.first;
+  }
+  enq(value) {
+    const newNode = new Node(value);
+
+    if (this.isEmpty()) {
+      this.first = newNode;
+      this.last = newNode;
+    } else {
+      this.last.next = newNode;
+      this.last = newNode;
+    }
+    this.length++;
+    return this;
+  }
+  deq() {
+    if (!this.first) {
+      return null;
+    }
+    if (this.first === this.last) {
+      this.last = null;
+    }
+    const holdingPointer = this.first;
+    this.first = this.first.next;
+    this.length--;
+    return holdingPointer;
+  }
+  isEmpty() {
+    if (this.length === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  printQ() {
+    let curr = this.first;
+    let items = ''
+
+    if (this.isEmpty()) {
+      console.log("empty");
+      return;
+    }
+
+    while (curr) {
+      if (curr.next) {
+        items += curr.value + ' -> '
+      } else {
+        items += curr.value
+      }
+      curr = curr.next 
+    }
+
+    console.log(items)
+  }
+}
+
+const q = new Queue();
+q.enq("x"); // [x]
+q.deq(); //[]
+
+```
+
